@@ -68,7 +68,7 @@ Peppo Task is a simple web-based application that lets users generate videos fro
 ## 📹 Example Video  
 
 👉 Here’s a sample output video (generated with `veo-3.0-preview`):  
-[![Watch Example](https://www.youtube.com/watch?v=7a68yf9jSO0)](https://www.youtube.com/watch?v=7a68yf9jSO0)  
+[![Watch Example](https://img.youtube.com/vi/7a68yf9jSO0/0.jpg)](https://www.youtube.com/watch?v=7a68yf9jSO0) 
 
   
 
