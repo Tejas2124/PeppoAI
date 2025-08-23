@@ -4,3 +4,4 @@ videos/
 generated_videos/
 .env
 secrets.py
+.idea/
