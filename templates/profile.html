@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #FFF8DC;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .profile-card {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      width: 350px;
+      text-align: center;
+    }
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #ffcc00;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .info {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .info p {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 10px;
+      background: #ffcc00;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #e6b800;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-card">
+    <div class="avatar" id="avatar">U</div>
+    <h2 id="username">Loading...</h2>
+    <div class="info">
+      <p><strong>Email:</strong> <span id="email">Loading...</span></p>
+      <p><strong>Username:</strong> <span id="user-name">Loading...</span></p>
+    </div>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <script>
+    const token = localStorage.getItem("authToken");
+
+    if (!token) {
+      alert("You are not logged in!");
+      window.location.href = "/login"; // ✅ Flask login route
+    }
+
+    fetch("/profile-info", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.error) {
+        alert(data.error);
+        window.location.href = "/login"; // ✅
+      } else {
+        document.getElementById("username").textContent = data.username;
+        document.getElementById("user-name").textContent = data.username;
+        document.getElementById("email").textContent = data.email;
+        document.getElementById("avatar").textContent = data.username.charAt(0).toUpperCase();
+      }
+    });
+
+    function logout() {
+      localStorage.removeItem("authToken");
+      window.location.href = "/login"; // ✅
+    }
+  </script>
+</body>
+</html>

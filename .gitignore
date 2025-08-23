@@ -1,0 +1,6 @@
+hiring/
+.gitignore
+videos/
+generated_videos/
+.env
+secrets.py
