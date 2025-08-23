@@ -80,82 +80,44 @@ def set_key():
     return jsonify({"message": "API key saved"}), 200
 
 # ---------------- VIDEO GENERATION ----------------
-
 @app.route("/generate-video", methods=["POST"])
 def generate_video():
     data = request.json
     token = data["token"]
     prompt = data["prompt"]
-    provider = data.get("provider", "gemini")   # 👈 frontend dropdown will send this
 
-    # 1. Validate token
+    # Validate token
     try:
         decoded = jwt.decode(token, SECRET, algorithms=["HS256"])
         username = decoded["username"]
     except Exception:
         return jsonify({"error": "Invalid token"}), 401
 
-    # 2. Get API key
     api_key = users.get(username, {}).get("api_key")
     if not api_key:
         return jsonify({"error": "No API key set"}), 400
 
-    # 3. Handle Providers
-    if provider == "gemini":
-        # ===== GEMINI =====
-        client = genai.Client(api_key=api_key)
-        model_name = "veo-3.0-generate-preview"
+    client = genai.Client(api_key=api_key)
+    model_name = "veo-3.0-generate-preview"
 
-        operation = client.models.generate_videos(
-            model=model_name,
-            prompt=prompt,
-        )
-        operation = types.GenerateVideosOperation(name=operation.name)
+    operation = client.models.generate_videos(
+        model=model_name,
+        prompt=prompt,
+    )
+    operation = types.GenerateVideosOperation(name=operation.name)
 
-        while not operation.done:
-            time.sleep(20)
-            operation = client.operations.get(operation)
+    while not operation.done:
+        time.sleep(20)
+        operation = client.operations.get(operation)
 
-        generated_video = operation.response.generated_videos[0]
-        filename = f"{username}_{int(time.time())}.mp4"
-        filepath = os.path.join(VIDEO_DIR, filename)
+    generated_video = operation.response.generated_videos[0]
+    filename = f"{username}_{int(time.time())}.mp4"
+    filepath = os.path.join(VIDEO_DIR, filename)
 
-        generated_video.video.save(filepath)
-        client.files.download(file=generated_video.video)
+    generated_video.video.save(filepath)
+    client.files.download(file=generated_video.video)
 
-        return jsonify({"video_url": f"/videos/{filename}"})
-
-    elif provider == "huggingface":
-        # ===== HUGGINGFACE =====
-        from huggingface_hub import InferenceClient
-        hf_client = InferenceClient(
-            provider="auto",
-            api_key=api_key,
-        )
-
-        try:
-            video = hf_client.text_to_video(
-                prompt,
-                model="Wan-AI/Wan2.2-TI2V-5B",
-            )
-        except Exception as e:
-            return jsonify({"error": f"HuggingFace inference failed: {str(e)}"}), 500
-
-        filename = f"{username}_{int(time.time())}.mp4"
-        filepath = os.path.join(VIDEO_DIR, filename)
-
-        # If HuggingFace returns raw video bytes
-        if isinstance(video, (bytes, bytearray)):
-            with open(filepath, "wb") as f:
-                f.write(video)
-        else:
-            return jsonify({"error": "Unexpected response from HuggingFace"}), 500
-
-        return jsonify({"video_url": f"/videos/{filename}"})
-
-    else:
-        return jsonify({"error": f"Unsupported provider '{provider}'"}), 400
-
+    return jsonify({"video_url": f"/videos/{filename}"})
 
 
 # ---------------- PROFILE ----------------
