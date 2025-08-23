@@ -12,7 +12,8 @@ Peppo Task is a simple web-based application that lets users generate videos fro
 
 2. **Model Selection**  
    - The sidebar provides a dropdown with supported AI models:  
-     - `veo-3.0-generate-preview`  
+     - `veo-3.0-generate-preview`
+   - These model will be available shortly:  
      - `veo-2.5`  
      - `gen-1`  
      - Hugging Face `Wan-AI/Wan2.2-TI2V-5B`  
@@ -32,7 +33,7 @@ Peppo Task is a simple web-based application that lets users generate videos fro
 - **Frontend** → HTML, CSS, JavaScript  
 - **Backend** → Python (Flask)  
 - **APIs** →  
-  - Google Gemini Video Models (`veo-3.0`, `veo-2.5`, `gen-1`)  
+  - Google Gemini Video Models (`veo-3.0`,)  
   - Hugging Face `Wan-AI/Wan2.2-TI2V-5B`  
 - **Authentication** → JWT Tokens handled by Flask  
 
@@ -77,8 +78,8 @@ Peppo Task is a simple web-based application that lets users generate videos fro
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/peppo-task.git
-cd peppo-task
+git clone https://github.com/Tejas2124/PeppoAI.git
+cd PeppoAI
 
 # Install dependencies
 pip install -r requirements.txt
