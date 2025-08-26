@@ -58,7 +58,7 @@ Peppo Task is a simple web-based application that lets users generate videos fro
 ## ▶️ Example Usage  
 
 1. Select model **Veo 3.0 Preview**  
-2. Enter API Key (or leave empty → default Gemini model is used)  
+2. Enter API Key 
 3. Type a prompt:  a dog whose fur look like cat.
 4. Click **Generate**  
 5. Video appears in the player 🎬  
