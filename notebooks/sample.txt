@@ -1,0 +1,3 @@
+The notebook contains the different platform api's which are available but due to rate limit or the cost issue not able to integrate them all. 
+
+we can integrate them  to the website with different models.
